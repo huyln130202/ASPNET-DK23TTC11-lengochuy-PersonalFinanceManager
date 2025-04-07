@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to Personal Finance Manager</h1>
+    <p>Manage your finances effectively with our comprehensive tools.</p>
+    
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="mt-4">
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary me-2">Login</a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-secondary">Register</a>
+        </div>
+    }
+    else
+    {
+        <div class="mt-4">
+            <a asp-controller="Wallet" asp-action="Index" class="btn btn-primary me-2">View Wallets</a>
+            <a asp-controller="Transaction" asp-action="Index" class="btn btn-primary me-2">View Transactions</a>
+            <a asp-controller="Budget" asp-action="Index" class="btn btn-primary">View Budgets</a>
+        </div>
+    }
+</div> 

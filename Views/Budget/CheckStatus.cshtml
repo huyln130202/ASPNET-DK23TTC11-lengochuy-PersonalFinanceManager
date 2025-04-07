@@ -1,0 +1,81 @@
+@model PersonalFinanceManager.Models.Budget
+
+@{
+    ViewData["Title"] = "Budget Status";
+}
+
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-center">Budget Status for @Model.Category</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Budget</h5>
+                            <p class="card-text display-6">@Model.Amount.ToString("C")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-warning text-dark">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Spent</h5>
+                            <p class="card-text display-6">@ViewBag.TotalSpent.ToString("C")</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card @(ViewBag.RemainingBudget >= 0 ? "bg-success" : "bg-danger") text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Remaining Budget</h5>
+                            <p class="card-text display-6">@ViewBag.RemainingBudget.ToString("C")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="progress mb-4" style="height: 25px;">
+                <div class="progress-bar @(ViewBag.PercentageUsed > 100 ? "bg-danger" : "bg-success")"
+                     role="progressbar"
+                     style="width: @(Math.Min(ViewBag.PercentageUsed, 100))%"
+                     aria-valuenow="@ViewBag.PercentageUsed"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    @ViewBag.PercentageUsed.ToString("F1")%
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <h4>Related Transactions</h4>
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Wallet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var transaction in ViewBag.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.TransactionDate.ToString("dd/MM/yyyy")</td>
+                                <td class="text-danger">-@transaction.Amount.ToString("C")</td>
+                                <td>@transaction.Description</td>
+                                <td>@transaction.Wallet.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div> 

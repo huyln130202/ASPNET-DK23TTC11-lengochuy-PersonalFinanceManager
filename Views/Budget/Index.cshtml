@@ -1,0 +1,76 @@
+@model IEnumerable<PersonalFinanceManager.Models.Budget>
+
+@{
+    ViewData["Title"] = "Budgets";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Budgets</h2>
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add New Budget
+            </a>
+        </div>
+    </div>
+
+    @if (ViewBag.Alert != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @ViewBag.Alert
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Period</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Category</td>
+                        <td>@item.Amount.ToString("C")</td>
+                        <td>@item.Period</td>
+                        <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.EndDate.ToString("dd/MM/yyyy")</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-action="CheckStatus" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                    <i class="bi bi-graph-up"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete(@item.Id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            if (confirm("Are you sure you want to delete this budget?")) {
+                window.location.href = `/Budget/Delete/${id}`;
+            }
+        }
+    </script>
+} 
