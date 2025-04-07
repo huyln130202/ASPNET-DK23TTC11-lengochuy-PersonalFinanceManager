@@ -33,6 +33,7 @@ namespace PersonalFinanceManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Wallet wallet)
         {
             if (ModelState.IsValid)

@@ -27,7 +27,7 @@ namespace PersonalFinanceManager.Models
         public int WalletId { get; set; }
 
         // Navigation properties
-        public required User User { get; set; }
-        public required Wallet Wallet { get; set; }
+        public User? User { get; set; }
+        public Wallet? Wallet { get; set; }
     }
 } 

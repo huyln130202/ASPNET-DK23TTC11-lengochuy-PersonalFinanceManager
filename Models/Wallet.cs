@@ -26,7 +26,7 @@ namespace PersonalFinanceManager.Models
         public int UserId { get; set; }
 
         // Navigation properties
-        public required User User { get; set; }
+        public User? User { get; set; }
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 } 
