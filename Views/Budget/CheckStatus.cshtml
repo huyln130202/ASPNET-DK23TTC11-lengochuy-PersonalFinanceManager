@@ -1,81 +1,120 @@
 @model PersonalFinanceManager.Models.Budget
 
 @{
-    ViewData["Title"] = "Budget Status";
+    ViewData["Title"] = "Kiểm Tra Trạng Thái Ngân Sách";
+    var totalSpent = ViewBag.TotalSpent ?? 0;
+    var remainingAmount = Model.Amount - totalSpent;
+    var transactions = ViewBag.Transactions as List<PersonalFinanceManager.Models.Transaction> ?? new List<PersonalFinanceManager.Models.Transaction>();
+    var rawPercentage = Model.Amount > 0 ? (totalSpent / Model.Amount) * 100 : 0;
+    var percentage = Math.Min(Math.Max(rawPercentage, 0), 100); // Giới hạn phần trăm từ 0-100
+    var progressClass = rawPercentage > 100 ? "bg-danger" : (rawPercentage > 80 ? "bg-warning" : "bg-success");
 }
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header">
-            <h2 class="text-center">Budget Status for @Model.Category</h2>
-        </div>
-        <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <div class="card bg-primary text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Budget</h5>
-                            <p class="card-text display-6">@Model.Amount.ToString("C")</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card bg-warning text-dark">
-                        <div class="card-body">
-                            <h5 class="card-title">Total Spent</h5>
-                            <p class="card-text display-6">@ViewBag.TotalSpent.ToString("C")</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card @(ViewBag.RemainingBudget >= 0 ? "bg-success" : "bg-danger") text-white">
-                        <div class="card-body">
-                            <h5 class="card-title">Remaining Budget</h5>
-                            <p class="card-text display-6">@ViewBag.RemainingBudget.ToString("C")</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+    <h2>Kiểm Tra Trạng Thái Ngân Sách</h2>
+    <hr />
 
-            <div class="progress mb-4" style="height: 25px;">
-                <div class="progress-bar @(ViewBag.PercentageUsed > 100 ? "bg-danger" : "bg-success")"
-                     role="progressbar"
-                     style="width: @(Math.Min(ViewBag.PercentageUsed, 100))%"
-                     aria-valuenow="@ViewBag.PercentageUsed"
-                     aria-valuemin="0"
-                     aria-valuemax="100">
-                    @ViewBag.PercentageUsed.ToString("F1")%
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Thông Tin Ngân Sách</h4>
                 </div>
-            </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Danh Mục:</dt>
+                        <dd class="col-sm-8">@Model.Category</dd>
 
-            <div class="table-responsive">
-                <h4>Related Transactions</h4>
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Description</th>
-                            <th>Wallet</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var transaction in ViewBag.Transactions)
+                        <dt class="col-sm-4">Số Tiền:</dt>
+                        <dd class="col-sm-8">@Model.Amount.ToString("#,##0")</dd>
+
+                        <dt class="col-sm-4">Chu Kỳ:</dt>
+                        <dd class="col-sm-8">@Model.Period</dd>
+
+                        <dt class="col-sm-4">Ngày Bắt Đầu:</dt>
+                        <dd class="col-sm-8">@Model.StartDate.ToString("dd/MM/yyyy")</dd>
+
+                        <dt class="col-sm-4">Ngày Kết Thúc:</dt>
+                        <dd class="col-sm-8">@Model.EndDate.ToString("dd/MM/yyyy")</dd>
+
+                        @if (!string.IsNullOrEmpty(Model.Description))
                         {
-                            <tr>
-                                <td>@transaction.TransactionDate.ToString("dd/MM/yyyy")</td>
-                                <td class="text-danger">-@transaction.Amount.ToString("C")</td>
-                                <td>@transaction.Description</td>
-                                <td>@transaction.Wallet.Name</td>
-                            </tr>
+                            <dt class="col-sm-4">Mô Tả:</dt>
+                            <dd class="col-sm-8">@Model.Description</dd>
                         }
-                    </tbody>
-                </table>
+                    </dl>
+                </div>
             </div>
+        </div>
 
-            <div class="text-center mt-4">
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Thống Kê Chi Tiêu</h4>
+                </div>
+                <div class="card-body">
+                    @if (transactions.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Ngày</th>
+                                        <th>Loại</th>
+                                        <th>Số Tiền</th>
+                                        <th>Mô Tả</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var transaction in transactions)
+                                    {
+                                        <tr>
+                                            <td>@transaction.TransactionDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@transaction.Type</td>
+                                            <td>@transaction.Amount.ToString("#,##0")</td>
+                                            <td>@transaction.Description</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mt-3">
+                            <h5>Tổng Chi Tiêu: @totalSpent.ToString("#,##0")</h5>
+                            <h5>Số Tiền Còn Lại: @remainingAmount.ToString("#,##0")</h5>
+                            <div class="progress">
+                                <div class="progress-bar @progressClass" role="progressbar" style="width: @(percentage.ToString("0"))%;" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                    @rawPercentage.ToString("0")%
+                                </div>
+                            </div>
+                            @if (rawPercentage > 100)
+                            {
+                                <div class="text-danger mt-2">
+                                    <small>* Đã vượt quá ngân sách @((rawPercentage - 100).ToString("0"))%</small>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Không có giao dịch nào trong khoảng thời gian này.</p>
+                        <div class="mt-3">
+                            <h5>Tổng Chi Tiêu: 0</h5>
+                            <h5>Số Tiền Còn Lại: @Model.Amount.ToString("#,##0")</h5>
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    0%
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
     </div>
+
+    <div class="mt-3">
+        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
+    </div>
+</div> 
 </div> 

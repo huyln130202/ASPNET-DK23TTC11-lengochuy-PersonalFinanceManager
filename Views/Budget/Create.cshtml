@@ -1,63 +1,63 @@
 @model PersonalFinanceManager.Models.Budget
 
 @{
-    ViewData["Title"] = "Create Budget";
+    ViewData["Title"] = "Tạo Ngân Sách";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">Create New Budget</h2>
+                <h2 class="text-center">Tạo Ngân Sách Mới</h2>
             </div>
             <div class="card-body">
-                <form asp-action="Create">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <form asp-controller="Budget" asp-action="Create" method="post">
+                    <div asp-validation-summary="All" class="text-danger"></div>
                     <div class="form-group mb-3">
-                        <label asp-for="Category" class="control-label"></label>
+                        <label asp-for="Category" class="control-label">Danh Mục</label>
                         <select asp-for="Category" class="form-control">
-                            <option value="Food">Food</option>
-                            <option value="Shopping">Shopping</option>
-                            <option value="Entertainment">Entertainment</option>
-                            <option value="Transportation">Transportation</option>
-                            <option value="Bills">Bills</option>
-                            <option value="Other">Other</option>
+                            <option value="Food">Ăn Uống</option>
+                            <option value="Shopping">Mua Sắm</option>
+                            <option value="Entertainment">Giải Trí</option>
+                            <option value="Transportation">Di Chuyển</option>
+                            <option value="Bills">Hóa Đơn</option>
+                            <option value="Other">Khác</option>
                         </select>
                         <span asp-validation-for="Category" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Amount" class="control-label"></label>
+                        <label asp-for="Amount" class="control-label">Số Tiền</label>
                         <input asp-for="Amount" class="form-control" type="number" step="0.01" />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Period" class="control-label"></label>
+                        <label asp-for="Period" class="control-label">Chu Kỳ</label>
                         <select asp-for="Period" class="form-control">
-                            <option value="Daily">Daily</option>
-                            <option value="Weekly">Weekly</option>
-                            <option value="Monthly">Monthly</option>
-                            <option value="Yearly">Yearly</option>
+                            <option value="Daily">Hàng Ngày</option>
+                            <option value="Weekly">Hàng Tuần</option>
+                            <option value="Monthly">Hàng Tháng</option>
+                            <option value="Yearly">Hàng Năm</option>
                         </select>
                         <span asp-validation-for="Period" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="StartDate" class="control-label"></label>
+                        <label asp-for="StartDate" class="control-label">Ngày Bắt Đầu</label>
                         <input asp-for="StartDate" class="form-control" type="date" />
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="EndDate" class="control-label"></label>
+                        <label asp-for="EndDate" class="control-label">Ngày Kết Thúc</label>
                         <input asp-for="EndDate" class="form-control" type="date" />
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Description" class="control-label"></label>
+                        <label asp-for="Description" class="control-label">Mô Tả</label>
                         <textarea asp-for="Description" class="form-control"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary">Create</button>
-                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-primary">Tạo</button>
+                        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
                     </div>
                 </form>
             </div>

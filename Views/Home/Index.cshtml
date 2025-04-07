@@ -1,24 +1,36 @@
 @{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Trang Chủ";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Personal Finance Manager</h1>
-    <p>Manage your finances effectively with our comprehensive tools.</p>
+    <h1 class="display-4">
+        <i class="bi bi-wallet2"></i> Chào mừng đến với Quản Lý Tài Chính Cá Nhân
+    </h1>
+    <p>Quản lý tài chính hiệu quả với các công cụ toàn diện của chúng tôi.</p>
     
     @if (!User.Identity.IsAuthenticated)
     {
         <div class="mt-4">
-            <a asp-controller="Account" asp-action="Login" class="btn btn-primary me-2">Login</a>
-            <a asp-controller="Account" asp-action="Register" class="btn btn-secondary">Register</a>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-primary me-2">
+                <i class="bi bi-box-arrow-in-right"></i> Đăng Nhập
+            </a>
+            <a asp-controller="Account" asp-action="Register" class="btn btn-secondary">
+                <i class="bi bi-person-plus"></i> Đăng Ký
+            </a>
         </div>
     }
     else
     {
         <div class="mt-4">
-            <a asp-controller="Wallet" asp-action="Index" class="btn btn-primary me-2">View Wallets</a>
-            <a asp-controller="Transaction" asp-action="Index" class="btn btn-primary me-2">View Transactions</a>
-            <a asp-controller="Budget" asp-action="Index" class="btn btn-primary">View Budgets</a>
+            <a asp-controller="Wallet" asp-action="Index" class="btn btn-primary me-2">
+                <i class="bi bi-wallet"></i> Xem Ví
+            </a>
+            <a asp-controller="Transaction" asp-action="Index" class="btn btn-primary me-2">
+                <i class="bi bi-arrow-left-right"></i> Xem Giao Dịch
+            </a>
+            <a asp-controller="Budget" asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-pie-chart"></i> Xem Ngân Sách
+            </a>
         </div>
     }
 </div> 

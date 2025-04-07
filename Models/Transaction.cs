@@ -6,20 +6,27 @@ namespace PersonalFinanceManager.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Số Tiền")]
         public decimal Amount { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng chọn loại giao dịch")]
+        [Display(Name = "Loại Giao Dịch")]
         public string Type { get; set; } = string.Empty; // Income or Expense
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng chọn danh mục")]
+        [Display(Name = "Danh Mục")]
         public string Category { get; set; } = string.Empty;
 
+        [Display(Name = "Mô Tả")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "Ngày Giao Dịch")]
         public DateTime TransactionDate { get; set; } = DateTime.Now;
 
+        [Display(Name = "Ngày Tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        [Display(Name = "Ngày Cập Nhật")]
         public DateTime? UpdatedAt { get; set; }
 
         // Foreign keys

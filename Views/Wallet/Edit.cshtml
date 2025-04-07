@@ -1,47 +1,47 @@
 @model PersonalFinanceManager.Models.Wallet
 
 @{
-    ViewData["Title"] = "Edit Wallet";
+    ViewData["Title"] = "Sửa Ví";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">Edit Wallet</h2>
+                <h2 class="text-center">Sửa Ví</h2>
             </div>
             <div class="card-body">
-                <form asp-action="Edit">
+                <form asp-action="Edit" onsubmit="return formatNumberBeforeSubmit(this)">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="Id" />
                     <div class="form-group mb-3">
-                        <label asp-for="Name" class="control-label"></label>
+                        <label asp-for="Name" class="control-label">Tên Ví</label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Type" class="control-label"></label>
+                        <label asp-for="Type" class="control-label">Loại Ví</label>
                         <select asp-for="Type" class="form-control">
-                            <option value="Cash">Cash</option>
-                            <option value="Bank">Bank Account</option>
-                            <option value="E-wallet">E-wallet</option>
-                            <option value="Credit Card">Credit Card</option>
+                            <option value="Cash">Tiền Mặt</option>
+                            <option value="Bank">Tài Khoản Ngân Hàng</option>
+                            <option value="E-wallet">Ví Điện Tử</option>
+                            <option value="Credit Card">Thẻ Tín Dụng</option>
                         </select>
                         <span asp-validation-for="Type" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Balance" class="control-label"></label>
-                        <input asp-for="Balance" class="form-control" type="number" step="0.01" />
+                        <label asp-for="Balance" class="control-label">Số Dư</label>
+                        <input asp-for="Balance" class="form-control" type="text" value="@Model.Balance.ToString("#,##0")" onkeyup="formatNumber(this)" />
                         <span asp-validation-for="Balance" class="text-danger"></span>
                     </div>
                     <div class="form-group mb-3">
-                        <label asp-for="Description" class="control-label"></label>
+                        <label asp-for="Description" class="control-label">Mô Tả</label>
                         <textarea asp-for="Description" class="form-control"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
                     </div>
                 </form>
             </div>
@@ -51,4 +51,26 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function formatNumber(input) {
+            // Remove all non-numeric characters
+            let value = input.value.replace(/[^\d]/g, '');
+            
+            // Format with thousand separators
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            
+            // Update input value
+            input.value = value;
+        }
+
+        function formatNumberBeforeSubmit(form) {
+            // Get the balance input
+            const balanceInput = form.querySelector('input[name="Balance"]');
+            
+            // Remove all dots before submitting
+            balanceInput.value = balanceInput.value.replace(/\./g, '');
+            
+            return true;
+        }
+    </script>
 } 

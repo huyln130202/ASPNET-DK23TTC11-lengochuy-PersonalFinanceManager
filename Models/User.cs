@@ -6,25 +6,32 @@ namespace PersonalFinanceManager.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage = "Email không hợp lệ")]
+        [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 
         public string PasswordHash { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập tên")]
+        [Display(Name = "Tên")]
         public string FirstName { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập họ")]
+        [Display(Name = "Họ")]
         public string LastName { get; set; } = string.Empty;
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
+        [Display(Name = "Số Điện Thoại")]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [Display(Name = "Ngày Tạo")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        [Display(Name = "Ngày Cập Nhật")]
         public DateTime? UpdatedAt { get; set; }
 
+        [Display(Name = "Trạng Thái")]
         public bool IsActive { get; set; } = true;
 
         // Navigation properties

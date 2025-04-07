@@ -1,12 +1,12 @@
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Đăng Nhập";
 }
 
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h2 class="text-center">Login</h2>
+                <h2 class="text-center">Đăng Nhập</h2>
             </div>
             <div class="card-body">
                 <form asp-action="Login" method="post">
@@ -16,16 +16,16 @@
                         <input name="email" class="form-control" type="email" required />
                     </div>
                     <div class="form-group mb-3">
-                        <label for="password" class="control-label">Password</label>
+                        <label for="password" class="control-label">Mật Khẩu</label>
                         <input name="password" class="form-control" type="password" required />
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary">Login</button>
+                        <button type="submit" class="btn btn-primary">Đăng Nhập</button>
                     </div>
                 </form>
             </div>
             <div class="card-footer text-center">
-                <p>Don't have an account? <a asp-action="Register">Register here</a></p>
+                <p>Chưa có tài khoản? <a asp-action="Register">Đăng ký tại đây</a></p>
             </div>
         </div>
     </div>
