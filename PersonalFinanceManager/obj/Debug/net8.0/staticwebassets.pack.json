@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\lengo\\OneDrive\\Máy tính\\Code ASP\\PersonalFinanceManager\\PersonalFinanceManager\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\lengo\\OneDrive\\Máy tính\\Code ASP\\PersonalFinanceManager\\PersonalFinanceManager\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.PersonalFinanceManager.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.PersonalFinanceManager.props",
+      "PackagePath": "build\\PersonalFinanceManager.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.PersonalFinanceManager.props",
+      "PackagePath": "buildMultiTargeting\\PersonalFinanceManager.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.PersonalFinanceManager.props",
+      "PackagePath": "buildTransitive\\PersonalFinanceManager.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

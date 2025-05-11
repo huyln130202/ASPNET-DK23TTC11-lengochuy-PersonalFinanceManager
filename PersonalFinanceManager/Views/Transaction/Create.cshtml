@@ -1,0 +1,79 @@
+@model PersonalFinanceManager.Models.Transaction
+
+@{
+    ViewData["Title"] = "Thêm Giao Dịch Mới";
+    var budgets = ViewBag.Budgets as List<PersonalFinanceManager.Models.Budget> ?? new List<PersonalFinanceManager.Models.Budget>();
+    var categories = budgets.Select(b => b.Category).Distinct().ToList();
+}
+
+<div class="row justify-content-center">
+        <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="text-center">Thêm Giao Dịch Mới</h2>
+            </div>
+            <div class="card-body">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group mb-3">
+                        <label asp-for="Type" class="control-label">Loại Giao Dịch</label>
+                    <select asp-for="Type" class="form-control">
+                            <option value="Income">Thu</option>
+                            <option value="Expense">Chi</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                        <label asp-for="Amount" class="control-label">Số Tiền</label>
+                        <input asp-for="Amount" class="form-control" type="text" onkeyup="formatNumber(this)" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                        <label asp-for="Category" class="control-label">Danh Mục</label>
+                        <select asp-for="Category" class="form-control">
+                            @foreach (var category in categories)
+                            {
+                                <option value="@category">@category</option>
+                            }
+                        </select>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="TransactionDate" class="control-label">Ngày Giao Dịch</label>
+                        <input asp-for="TransactionDate" class="form-control" type="date" />
+                        <span asp-validation-for="TransactionDate" class="text-danger"></span>
+                    </div>
+                <div class="form-group mb-3">
+                        <label asp-for="Description" class="control-label">Mô Tả</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                        <label asp-for="WalletId" class="control-label">Ví</label>
+                        <select asp-for="WalletId" class="form-control" asp-items="ViewBag.WalletId"></select>
+                </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary">Tạo</button>
+                        <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function formatNumber(input) {
+            // Remove all non-numeric characters
+            let value = input.value.replace(/[^\d]/g, '');
+            
+            // Format with thousand separators
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            
+            // Update input value
+            input.value = value;
+        }
+    </script>
+} 

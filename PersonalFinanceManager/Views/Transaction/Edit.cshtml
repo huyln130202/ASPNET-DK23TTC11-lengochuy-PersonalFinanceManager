@@ -1,0 +1,94 @@
+@model PersonalFinanceManager.Models.Transaction
+
+@{
+    ViewData["Title"] = "Sửa Giao Dịch";
+}
+
+<div class="container">
+    <h2>Sửa Giao Dịch</h2>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="Edit" onsubmit="return formatNumberBeforeSubmit(this)">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="form-group mb-3">
+                            <label asp-for="Type" class="control-label">Loại Giao Dịch</label>
+                    <select asp-for="Type" class="form-control">
+                                <option value="Income">Thu</option>
+                                <option value="Expense">Chi</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                            <label asp-for="Amount" class="control-label">Số Tiền</label>
+                            <input asp-for="Amount" class="form-control" type="number" step="1" min="0" value="@Model.Amount.ToString("0")" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                            <label asp-for="Category" class="control-label">Danh Mục</label>
+                    <input asp-for="Category" class="form-control" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                            <label asp-for="Description" class="control-label">Mô Tả</label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                            <label asp-for="TransactionDate" class="control-label">Ngày</label>
+                    <input asp-for="TransactionDate" class="form-control" type="date" />
+                    <span asp-validation-for="TransactionDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                            <label asp-for="WalletId" class="control-label">Ví</label>
+                    <select asp-for="WalletId" class="form-control" asp-items="@(new SelectList(ViewBag.Wallets, "Id", "Name"))">
+                                <option value="">Chọn ví</option>
+                    </select>
+                    <span asp-validation-for="WalletId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                            <a asp-action="Index" class="btn btn-secondary">Quay Lại</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function formatNumber(input) {
+            // Remove all non-numeric characters
+            let value = input.value.replace(/[^\d]/g, '');
+            
+            // Format with thousand separators
+            value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            
+            // Update input value
+            input.value = value;
+        }
+
+        function formatNumberBeforeSubmit(form) {
+            // Get the amount input
+            const amountInput = form.querySelector('input[name="Amount"]');
+            
+            // Remove all dots before submitting
+            amountInput.value = amountInput.value.replace(/\./g, '');
+            
+            return true;
+        }
+    </script>
+} 

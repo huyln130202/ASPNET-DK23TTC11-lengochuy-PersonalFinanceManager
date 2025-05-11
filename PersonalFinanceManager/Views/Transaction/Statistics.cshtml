@@ -1,0 +1,144 @@
+@{
+    ViewData["Title"] = "Thống Kê";
+    var totalIncome = (decimal)ViewBag.TotalIncome;
+    var totalExpense = (decimal)ViewBag.TotalExpense;
+    var difference = (decimal)ViewBag.Difference;
+    var categoryStats = ViewBag.CategoryStats as IEnumerable<dynamic>;
+    var typeStats = ViewBag.TypeStats as IEnumerable<dynamic>;
+    var month = ViewBag.Month as int?;
+    var year = ViewBag.Year as int?;
+    var now = DateTime.Now;
+    var currentYear = year ?? now.Year;
+    var currentMonth = month ?? now.Month;
+}
+
+<div class="container">
+    <h2 class="mb-4">Thống Kê Thu Chi</h2>
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-auto">
+            <select name="month" class="form-select">
+                <option value="">Tất cả tháng</option>
+                @for (int m = 1; m <= 12; m++)
+                {
+                    <option value="@m" selected="@(currentMonth == m && month.HasValue ? "selected" : null)">Tháng @m</option>
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <select name="year" class="form-select">
+                <option value="">Tất cả năm</option>
+                @for (int y = now.Year; y >= now.Year - 10; y--)
+                {
+                    <option value="@y" selected="@(currentYear == y && year.HasValue ? "selected" : null)">@y</option>
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng thu</h5>
+                    <p class="card-text text-success fs-4">@totalIncome.ToString("#,##0") đ</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng chi</h5>
+                    <p class="card-text text-danger fs-4">@totalExpense.ToString("#,##0") đ</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Chênh lệch</h5>
+                    <p class="card-text fs-4 @(difference >= 0 ? "text-success" : "text-danger")">@difference.ToString("#,##0") đ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <canvas id="categoryPie"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="typeBar"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Danh mục phổ biến</h5>
+            <table class="table">
+                <tbody>
+                    @foreach (var cat in categoryStats)
+                    {
+                        <tr>
+                            <td>@cat.Category</td>
+                            <td>@cat.Total.ToString("#,##0") đ</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h5>Loại chi tiêu phổ biến nhất: <b>@(typeStats.OrderByDescending(t => t.Total).FirstOrDefault()?.Type == "Expense" ? "Tiền chi" : "Tiền thu")</b></h5>
+            <table class="table">
+                <tbody>
+                    @foreach (var t in typeStats)
+                    {
+                        <tr>
+                            <td>@(t.Type == "Expense" ? "Tiền chi" : "Tiền thu")</td>
+                            <td>@t.Total.ToString("#,##0") đ</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Pie chart theo danh mục
+        const categoryStats = @Html.Raw(Json.Serialize(categoryStats));
+        new Chart(document.getElementById('categoryPie'), {
+            type: 'pie',
+            data: {
+                labels: categoryStats.map(c => c.category),
+                datasets: [{
+                    data: categoryStats.map(c => c.total),
+                    backgroundColor: ['#ff6384', '#ff9f40', '#ffcd56', '#4bc0c0', '#36a2eb', '#9966ff']
+                }]
+            }
+        });
+
+        // Bar chart theo loại
+        const typeStats = @Html.Raw(Json.Serialize(typeStats));
+        new Chart(document.getElementById('typeBar'), {
+            type: 'bar',
+            data: {
+                labels: typeStats.map(t => t.type == 'Expense' ? 'Tiền chi' : 'Tiền thu'),
+                datasets: [{
+                    label: 'Số tiền',
+                    data: typeStats.map(t => t.total),
+                    backgroundColor: ['#dc3545', '#28a745']
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+} 
